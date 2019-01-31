@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import Blah from './Blah.js'
+import Header from './Header.js'
+import Main from './Main.js'
+import Footer from './Footer.js'
 
 import 'todomvc-common/base.css'
 import 'todomvc-app-css/index.css'
@@ -7,62 +9,77 @@ import 'todomvc-app-css/index.css'
 class App extends Component {
   constructor(props){
     super(props)
+    this.state = {todolist: [], filter: 0};
+  }
+
+  handleChange = (value) => {
+    if(value === "")
+      return;
+    value.trim();
+    let newtodo = {
+      name: value,
+      editing: false,
+      finished: false
+    }
+    let array = this.state.todolist;
+    array.push(newtodo);
+    this.setState({todolist: array});
+  }
+
+  /* Remove an item */
+  handleClick = (index) => {
+    let array = this.state.todolist;
+    array.splice(index, 1);
+    this.setState({todolist: array});
+  }
+
+  applyFilter = (filter) => {
+    this.setState({filter: filter});
+  }
+
+  toggleCompleted = (index) => {
+    let array = this.state.todolist;
+    array[index].finished = !array[index].finished;
+    this.setState({todolist: array}); 
+  }
+
+  clearcompleted = () => {
+    let array = this.state.todolist.filter((value, index) => {
+      return !value.finished;
+    });
+    this.setState({todolist: array});
+  }
+
+  markallcompleted = () => {
+    // Do stuff
+  }
+
+  rendermain = () => {
+    if(this.state.todolist.length > 0)
+      return (
+        <Main todolist={this.state.todolist} handleClick={this.handleClick} filter={this.state.filter} toggleCompleted={this.toggleCompleted}/>
+      )
+    else
+      return null;
+  }
+
+  renderfooter = () => {
+    if(this.state.todolist.length > 0)
+      return (
+        <Footer applyFilter={this.applyFilter} clearcompleted={this.clearcompleted}/>
+      )
+    else
+      return null;
   }
 
   render() {
     return (
       <div>
         <section className="todoapp">
-          <header className="header">
-            <h1>todos</h1>
-            <input className="new-todo" placeholder="What needs to be done?" autoFocus/>
-          </header>
-          {/* <!-- This section should be hidden by default and shown when there are todos --> */}
-          <section className="main">
-            <input id="toggle-all" className="toggle-all" type="checkbox"/>
-            <label htmlFor="toggle-all">Mark all as complete</label>
-            <ul className="todo-list">
-              {/* <!-- These are here just to show the structure of the list items -->
-              <!-- List items should get the className `editing` when editing and `completed` when marked as completed --> */}
-              <li className="completed">
-                <div className="view">
-                  <input className="toggle" type="checkbox" defaultChecked/>
-                  <label>Taste JavaScript</label>
-                  <button className="destroy"></button>
-                </div>
-                <input className="edit" defaultValue="Create a TodoMVC template"/>
-              </li>
-              <li>
-                <div className="view">
-                  <input className="toggle" type="checkbox"/>
-                  <label>Buy a unicorn</label>
-                  <button className="destroy"></button>
-                </div>
-                <input className="edit" defaultValue="Rule the web"/>
-              </li>
-            </ul>
-          </section>
-          {/* <!-- This footer should hidden by default and shown when there are todos --> */}
-          <footer className="footer">
-            {/* <!-- This should be `0 items left` by default --> */}
-            <span className="todo-count"><strong>0</strong> item left</span>
-            {/* <!-- Remove this if you don't implement routing --> */}
-            <ul className="filters">
-              <li>
-                <a className="selected" href="#/">All</a>
-              </li>
-              <li>
-                <a href="#/active">Active</a>
-              </li>
-              <li>
-                <a href="#/completed">Completed</a>
-              </li>
-            </ul>
-            {/* <!-- Hidden if no completed items are left ↓ --> */}
-            <button className="clear-completed">Clear completed</button>
-          </footer>
+          <Header handleChange={this.handleChange} />
+          {this.rendermain()}
+          {this.renderfooter()}
         </section>
-        <Blah/>
       </div>
     );
   }
