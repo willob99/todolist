@@ -9,14 +9,14 @@ class Header extends Component {
     this.state = { value: "" };
   }
 
-  handleChange = (event) => {
+  addLetter = (event) => {
       this.setState({value: event.target.value});
   }
 
   handleSubmit = (event) => {
       event.preventDefault();
-      this.props.handleChange(this.state.value);
-      this.setState({value: ""});
+      this.props.addToDo(this.state.value);
+      this.setState({value: "" });
 }
 
   render() {
@@ -24,7 +24,7 @@ class Header extends Component {
         <header className="header">
             <h1>todos</h1>
             <form onSubmit={this.handleSubmit}>
-                <input className="new-todo" placeholder="What needs to be done?" value={this.state.value} onChange={this.handleChange} autoFocus/>
+                <input className="new-todo" placeholder="What needs to be done?" value={this.state.value} onChange={this.addLetter} autoFocus/>
             </form>
         </header>
     );

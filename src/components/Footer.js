@@ -10,7 +10,7 @@ class Footer extends Component {
   }
 
   showall = () => {
-    this.props.applyFilter(0);
+    this.props.updateFilter(0);
     this.setState({filter: 0});
   }
 
@@ -26,7 +26,7 @@ class Footer extends Component {
   }
 
   showactive = () => {
-    this.props.applyFilter(1);
+    this.props.updateFilter(1);
     this.setState({filter: 1});
   }
 
@@ -42,7 +42,7 @@ class Footer extends Component {
   }
 
   showcompleted = () => {
-    this.props.applyFilter(2);
+    this.props.updateFilter(2);
     this.setState({filter: 2});
   }
 
@@ -57,12 +57,14 @@ class Footer extends Component {
     )
   }
 
-  clearcompleted = () => {
-    this.props.clearcompleted();
+  clearCompleted = () => {
+    this.props.clearCompleted();
   }
 
   render() {
-
+    if(this.props.length === 0){
+      return null;
+    }
     return (
         <footer className="footer">
             {/* <!-- This should be `0 items left` by default --> */}
@@ -80,7 +82,7 @@ class Footer extends Component {
               </li>
             </ul>
             {/* <!-- Hidden if no completed items are left ↓ --> */}
-            <button className="clear-completed" onClick={this.clearcompleted}>Clear completed</button>
+            <button className="clear-completed" onClick={this.clearCompleted}>Clear completed</button>
         </footer>
     );
   }
