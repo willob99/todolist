@@ -6,7 +6,6 @@ import App from './components/App.js';
 import registerServiceWorker from './registerServiceWorker';
 import { render } from 'react-dom'
 import { createStore } from 'redux'
-import reducers from './reducers' //same thing as './reducers/index.js'
 
 const store = createStore(reducers)
 
